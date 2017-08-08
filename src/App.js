@@ -19,6 +19,14 @@ const syncURL = 'http://localhost:5984/';
 const dbName = 'chatdb';
 
 class App extends Component {
+  // creates a DB by passing a name, adapter and password to RxDB
+  async createDatabase() {
+    const db = await RxDB.create(
+      {name: dbName, adapter: 'idb', password: '12345678'}
+    );
+  }
+
+
   render() {
     return (
       <div className="App">
