@@ -24,6 +24,10 @@ class App extends Component {
     const db = await RxDB.create(
       {name: dbName, adapter: 'idb', password: '12345678'}
     );
+    // enables the leader-election algorithm which makes sure that always one tab is managing remote data access. 
+    db.waitForLeadership().then(() => {
+      document.title = '♛ ' + document.title;
+    });
   }
 
 
