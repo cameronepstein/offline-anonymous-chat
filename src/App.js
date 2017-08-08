@@ -50,6 +50,18 @@ class App extends Component {
     return db;
   }
 
+  async componentDidMount() {
+    this.db = await this.createDatabase();
+
+    const sub =
+      this.db.messages.find().sort({id: 1}).$.subscribe(messages => {
+        if (!messages)
+          return;
+        toast('Reloading messages');
+        this.setState({messages: messages});
+      });
+      this.subs.push(sub)
+  }
 
   render() {
     return (
