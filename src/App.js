@@ -24,10 +24,17 @@ class App extends Component {
     const db = await RxDB.create(
       {name: dbName, adapter: 'idb', password: '12345678'}
     );
-    // enables the leader-election algorithm which makes sure that always one tab is managing remote data access. 
+    // enables the leader-election algorithm which makes sure that always one tab is managing remote data access.
     db.waitForLeadership().then(() => {
       document.title = '♛ ' + document.title;
     });
+
+    const messagesCollection = await db.collection({
+      name: 'messages',
+      schema: schema
+    });
+    messagesCollection.sync({remote: syncURL + dbName + '/'});
+    return db;
   }
 
 
