@@ -4,6 +4,9 @@ import './App.css';
 import * as RxDB from 'rxdb';
 import { QueryChangeDetector } from 'rxdb';
 import { schema } from './Schema';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import * as moment from 'moment';
 
 // Query change detector is disabled by default
 QueryChangeDetector.enable();
@@ -19,6 +22,16 @@ const syncURL = 'http://localhost:5984/';
 const dbName = 'chatdb';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      newMessage: '', messages: []
+    };
+    this.subs = [];
+    this.addMessage = this.addMessage.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
+  }
   // creates a DB by passing a name, adapter and password to RxDB
   async createDatabase() {
     const db = await RxDB.create(
